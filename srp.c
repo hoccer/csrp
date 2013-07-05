@@ -867,11 +867,11 @@ void  srp_user_process_challenge( struct SRPUser * usr,
         BN_mod_exp(v, usr->ng->g, x, usr->ng->N, ctx);
         
         /* S = (B - k*(g^x)) ^ (a + ux) */
-        BN_mul(tmp1, u, x, ctx);
-        BN_add(tmp2, usr->a, tmp1);             /* tmp2 = (a + ux)      */
-        BN_mod_exp(tmp1, usr->ng->g, x, usr->ng->N, ctx);
-        BN_mul(tmp3, k, tmp1, ctx);             /* tmp3 = k*(g^x)       */
-        BN_sub(tmp1, B, tmp3);                  /* tmp1 = (B - K*(g^x)) */
+        BN_mul(tmp1, u, x, ctx);                           /* tmp1 = ux            */
+        BN_add(tmp2, usr->a, tmp1);                        /* tmp2 = (a + ux)      */
+        BN_mod_exp(tmp1, usr->ng->g, x, usr->ng->N, ctx);  /* tmp1 = g^x           */
+        BN_mod_mul(tmp3, k, tmp1, usr->ng->N, ctx);        /* tmp3 = k*(g^x)       */
+        BN_mod_sub(tmp1, B, tmp3, usr->ng->N, ctx);        /* tmp1 = (B - K*(g^x)) */
         BN_mod_exp(usr->S, tmp1, tmp2, usr->ng->N, ctx);
 
         hash_num(usr->hash_alg, usr->S, usr->session_key);
