@@ -583,7 +583,7 @@ struct SRPVerifier *  srp_verifier_new( SRP_HashAlgorithm alg, SRP_NGType ng_typ
        
        /* S = (A *(v^u)) ^ b */
        BN_mod_exp(tmp1, v, u, ng->N, ctx);
-       BN_mul(tmp2, A, tmp1, ctx);
+       BN_mod_mul(tmp2, A, tmp1, ng->N, ctx);
        BN_mod_exp(S, tmp2, b, ng->N, ctx);
        
        hash_num(alg, S, ver->session_key);
