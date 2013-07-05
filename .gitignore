@@ -1,0 +1,5 @@
+*~
+*.o
+srp-client
+srp-server
+srp-generator
